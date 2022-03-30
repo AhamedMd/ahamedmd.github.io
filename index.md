@@ -1,4 +1,4 @@
-## Welcome to my page
+# Welcome to my page
 
 ### My name is Ahamed MOHAMED, I am a Student at the [Université de Technologie de Compiègne](utc.fr) currently pursuing studies in computer science, to graduate with a master's degree.
 
