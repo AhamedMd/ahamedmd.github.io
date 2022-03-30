@@ -1,4 +1,8 @@
-## Welcome to GitHub Pages
+## Welcome to my page
+
+###My name is Ahamed MOHAMED, I am a Student at the [Université de Technologie de Compiègne](utc.fr) currently pursuing studies in computer science, to graduate with a master's degree.
+You can visit my [LinkedIn](https://www.linkedin.com/in/ahamed-mohamed-b13220224/) to contact me for potentiel hirings or to look for my qualifications.
+
 
 You can use the [editor on GitHub](https://github.com/AhamedMd/ahamedmd.github.io/edit/main/index.md) to maintain and preview the content for your website in Markdown files.
 
