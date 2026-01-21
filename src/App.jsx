@@ -21,10 +21,16 @@ import {
   ArrowRight,
   Code,
   Layers,
-  Zap
+  Zap,
+  Eye,
+  Download,
+  Send,
+  X
 } from 'lucide-react';
 
 const App = () => {
+  const [isViewerVisible, setIsViewerVisible] = useState(false);
+
   const profile = {
     name: "Ahamed Sazjaath MOHAMED",
     firstName: "Ahamed",
@@ -33,8 +39,11 @@ const App = () => {
     institution: "Centre Inria Université Grenoble Alpes",
     location: "Grenoble, France",
     email: "ahamed.mohamed@inria.fr",
-    interests: ["Human-Aware Social Navigation", "Visual SLAM", "Deep Reinforcement Learning", "Multi-Agent Systems"],
-    education: "M.Sc. Computer Science Engineering (UTC)"
+    interests: ["Human-Aware Social Navigation", "Linear and Non-linear control", "Computer Vision", "Visual SLAM", "Deep Reinforcement Learning", "Multi-Agent Systems"],
+    education: "M.Sc. Computer Science Engineering (UTC)",
+    linkedin: "https://www.linkedin.com/in/ahamed-sazjaath-mohamed/",
+    github: "https://github.com/ahamedsazjaath",
+    cvPath: "/mohamed_cv-1.pdf" // Ensure this file is in your 'public' folder
   };
 
   const researchExp = [
@@ -91,12 +100,34 @@ const App = () => {
     languages: ["Tamil (Native)", "English (C2)", "French (C1)", "Spanish (A2)"]
   };
 
+  const scrollToSection = (id) => {
+    const element = document.getElementById(id);
+    if (element) {
+      const offset = 100;
+      const bodyRect = document.body.getBoundingClientRect().top;
+      const elementRect = element.getBoundingClientRect().top;
+      const elementPosition = elementRect - bodyRect;
+      const offsetPosition = elementPosition - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  const handleViewCV = () => {
+    setIsViewerVisible(true);
+    // Use a small timeout to ensure the element is rendered before scrolling
+    setTimeout(() => scrollToSection('cv'), 100);
+  };
+
   return (
     <div className="min-h-screen w-full bg-[#fdfdfd] text-slate-900 font-serif selection:bg-sky-100 selection:text-sky-900 overflow-x-hidden text-left">
-      {/* Dynamic Header / Navigation */}
+      {/* Navigation */}
       <nav className="fixed top-0 w-full bg-white/90 backdrop-blur-xl border-b border-slate-100 z-50">
         <div className="max-w-[1440px] mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-3 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
             <div className="bg-sky-600 text-white p-2 rounded-lg rotate-3 shadow-lg shadow-sky-100">
               <GraduationCap size={22} />
             </div>
@@ -107,19 +138,35 @@ const App = () => {
           </div>
           <div className="hidden md:flex items-center space-x-10 text-[11px] font-sans font-black uppercase tracking-[0.2em] text-slate-500">
             {['Research', 'Skills', 'Education', 'Publications'].map(item => (
-              <a key={item} href={`#${item.toLowerCase()}`} className="hover:text-sky-600 transition-colors relative group">
+              <button
+                key={item}
+                onClick={() => scrollToSection(item.toLowerCase())}
+                className="hover:text-sky-600 transition-colors relative group uppercase font-black"
+              >
                 {item}
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-sky-600 transition-all group-hover:w-full"></span>
-              </a>
+              </button>
             ))}
           </div>
-          <button className="bg-slate-900 text-white px-5 py-2.5 rounded-full font-sans text-[10px] font-black uppercase tracking-widest hover:bg-sky-600 transition-all active:scale-95 shadow-lg shadow-slate-200">
-            Download CV
-          </button>
+          <div className="flex items-center space-x-3">
+            <button
+              onClick={() => scrollToSection('contact')}
+              className="hidden sm:block text-slate-500 font-sans text-[10px] font-black uppercase tracking-widest hover:text-sky-600 transition-colors mr-4"
+            >
+              Contact
+            </button>
+            <a
+              href={profile.cvPath}
+              download="Ahamed_Mohamed_CV.pdf"
+              className="bg-slate-900 text-white px-5 py-2.5 rounded-full font-sans text-[10px] font-black uppercase tracking-widest hover:bg-sky-600 transition-all active:scale-95 shadow-lg shadow-slate-200"
+            >
+              Download CV
+            </a>
+          </div>
         </div>
       </nav>
 
-      {/* Hero Section - Explicitly filling width to override #root constraints */}
+      {/* Hero Section */}
       <section className="pt-48 pb-24 px-6 border-b border-slate-50 w-full">
         <div className="max-w-[1440px] mx-auto">
           <div className="grid lg:grid-cols-[1.2fr_0.8fr] gap-20 items-center">
@@ -132,7 +179,7 @@ const App = () => {
                 Perceiving <span className="text-sky-600 italic text-left">Human</span> Context.
               </h1>
               <p className="text-2xl md:text-3xl text-slate-500 font-sans font-light leading-relaxed max-w-3xl italic">
-                Bridging the gap between autonomous machine perception and human social intelligence through <span className="text-slate-900 font-medium">Visual SLAM</span> and <span className="text-slate-900 font-medium">Deep Reinforcement Learning</span>.
+                Research Engineer at Inria specializing in the development of autonomous systems. My work focuses on making robots perceive and interact with humans in a more natural way. I use <span className="text-slate-900 font-medium">Computer Vision,</span> <span className="text-slate-900 font-medium">Visual SLAM</span> and <span className="text-slate-900 font-medium">Deep Reinforcement Learning</span> to enable complex robots to navigate and interact within human-centric environments with social intelligence.
               </p>
               <div className="flex flex-wrap gap-3 pt-4">
                 {profile.interests.map(interest => (
@@ -140,6 +187,23 @@ const App = () => {
                     {interest}
                   </span>
                 ))}
+              </div>
+              <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                <button
+                  onClick={handleViewCV}
+                  className="flex items-center justify-center space-x-2 bg-slate-900 text-white px-8 py-4 rounded-2xl font-sans font-black text-xs uppercase tracking-[0.2em] hover:bg-sky-600 transition-all shadow-xl"
+                >
+                  <Eye size={16} />
+                  <span>{isViewerVisible ? "CV Viewer Active" : "View Full CV"}</span>
+                </button>
+                <a
+                  href={profile.cvPath}
+                  download="Ahamed_Mohamed_CV.pdf"
+                  className="flex items-center justify-center space-x-2 bg-white text-slate-900 border border-slate-200 px-8 py-4 rounded-2xl font-sans font-black text-xs uppercase tracking-[0.2em] hover:border-sky-600 transition-all shadow-sm"
+                >
+                  <Download size={16} />
+                  <span>Download PDF</span>
+                </a>
               </div>
             </div>
 
@@ -166,8 +230,8 @@ const App = () => {
                 </div>
                 <div className="h-px bg-slate-100"></div>
                 <div className="grid grid-cols-2 gap-5">
-                  <SocialCard icon={Linkedin} label="LinkedIn" />
-                  <SocialCard icon={Github} label="GitHub" />
+                  <SocialCard icon={Linkedin} label="LinkedIn" onClick={() => window.open(profile.linkedin, '_blank')} />
+                  <SocialCard icon={Github} label="GitHub" onClick={() => window.open(profile.github, '_blank')} />
                 </div>
               </div>
             </div>
@@ -177,14 +241,53 @@ const App = () => {
 
       {/* Main Content Area */}
       <div className="max-w-[1440px] mx-auto">
-        {/* Skills Grid */}
+        {/* CV Viewer Section - Hidden by default */}
+        {isViewerVisible && (
+          <section id="cv" className="py-24 px-6 bg-slate-50 border-y border-slate-100 rounded-[4rem] animate-in fade-in slide-in-from-top-4 duration-500">
+            <div className="flex items-center justify-between mb-20 max-w-6xl mx-auto">
+              <SectionHeader title="CV Viewer" subtitle="Interactive Document" />
+              <button
+                onClick={() => setIsViewerVisible(false)}
+                className="bg-white p-3 rounded-full text-slate-400 hover:text-rose-500 shadow-sm transition-colors border border-slate-100"
+              >
+                <X size={24} />
+              </button>
+            </div>
+            <div className="max-w-5xl mx-auto">
+              <div className="bg-white p-4 rounded-3xl shadow-2xl border border-slate-200">
+                <div className="flex items-center justify-between mb-4 px-4 py-2 border-b border-slate-100">
+                  <div className="flex items-center space-x-2">
+                    <FileText className="text-sky-600" size={18} />
+                    <span className="font-sans font-black text-[10px] uppercase tracking-widest text-slate-500">mohamed_cv-1.pdf</span>
+                  </div>
+                  <a href={profile.cvPath} download="Ahamed_Mohamed_CV.pdf" className="text-sky-600 hover:text-sky-800 flex items-center space-x-1">
+                    <Download size={14} />
+                    <span className="font-sans font-black text-[10px] uppercase tracking-widest">Download Copy</span>
+                  </a>
+                </div>
+                <div className="aspect-[1/1.4] w-full overflow-hidden rounded-2xl bg-slate-100 flex items-center justify-center relative group">
+                  <iframe
+                    src={profile.cvPath}
+                    className="w-full h-full border-none"
+                    title="CV Viewer"
+                  />
+                </div>
+                <p className="mt-6 text-center text-slate-400 font-sans text-[11px] italic">
+                  *If the viewer is not loading, please use the download button above.
+                </p>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Skills */}
         <section id="skills" className="py-24 px-6">
           <SectionHeader title="Technical Core" subtitle="Expertise & Tools" />
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
             <SkillBlock icon={Code} title="Languages" items={skills.programming} color="sky" />
             <SkillBlock icon={Cpu} title="Robotics" items={skills.robotics} color="indigo" />
             <SkillBlock icon={Layers} title="Infrastructure" items={skills.technologies} color="slate" />
-            <SkillBlock icon={Globe} title="Languages" items={skills.languages} color="amber" />
+            <SkillBlock icon={Globe} title="Communication" items={skills.languages} color="amber" />
           </div>
         </section>
 
@@ -201,7 +304,7 @@ const App = () => {
                 </div>
                 <div className="bg-white border border-slate-100 p-10 md:p-14 rounded-[3rem] shadow-sm hover:shadow-2xl transition-all duration-700">
                   <div className="flex items-center space-x-3 mb-8">
-                    <Terminal size={20} className="text-sky-50" />
+                    <Terminal size={20} className="text-sky-500" />
                     <span className="font-sans text-xs font-black uppercase tracking-[0.3em] text-slate-300 italic">Domain: {exp.focus}</span>
                   </div>
                   <ul className="space-y-8">
@@ -218,10 +321,44 @@ const App = () => {
           </div>
         </section>
 
-        {/* Publication */}
+        {/* Education */}
+        <section id="education" className="py-24 px-6">
+          <SectionHeader title="Academic Path" subtitle="Education" />
+          <div className="grid md:grid-cols-2 gap-12">
+            <div className="bg-white border border-slate-100 p-10 rounded-[3rem] shadow-sm hover:shadow-xl transition-all">
+              <div className="flex justify-between items-start mb-6">
+                <div className="bg-sky-50 p-4 rounded-2xl text-sky-600">
+                  <GraduationCap size={32} />
+                </div>
+                <span className="text-xs font-sans font-black text-slate-400 uppercase tracking-widest">2019 — 2025</span>
+              </div>
+              <h3 className="text-2xl font-bold mb-2">Computer Science Engineering Degree</h3>
+              <p className="text-sky-600 font-sans font-bold text-sm mb-4">Université de Technologie Compiègne (UTC)</p>
+              <p className="text-slate-500 font-sans text-sm leading-relaxed mb-6 italic">
+                Specialization in Embedded Informatics & Autonomous Systems. Focused on intelligent vehicles, multi-agent systems, and sensor fusion.
+              </p>
+            </div>
+
+            <div className="bg-white border border-slate-100 p-10 rounded-[3rem] shadow-sm hover:shadow-xl transition-all">
+              <div className="flex justify-between items-start mb-6">
+                <div className="bg-slate-50 p-4 rounded-2xl text-slate-400">
+                  <Award size={32} />
+                </div>
+                <span className="text-xs font-sans font-black text-slate-400 uppercase tracking-widest">2017 — 2019</span>
+              </div>
+              <h3 className="text-2xl font-bold mb-2">Baccalaureat Générale</h3>
+              <p className="text-slate-400 font-sans font-bold text-sm mb-4">Lycée Marie Curie</p>
+              <p className="text-slate-500 font-sans text-sm leading-relaxed italic">
+                Completed secondary education with high honors in scientific streams.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Publications */}
         <section id="publications" className="py-24 px-6">
           <SectionHeader title="Scientific Impact" subtitle="Publications" />
-          <div className="bg-slate-900 text-white rounded-[4rem] p-10 md:p-24 relative overflow-hidden group">
+          <div className="bg-slate-900 text-white rounded-[4rem] p-10 md:p-24 relative overflow-hidden group shadow-2xl">
             <div className="relative z-10 flex flex-col xl:flex-row gap-20 items-center">
               <div className="space-y-10 flex-grow">
                 <div className="flex items-center space-x-5">
@@ -244,7 +381,69 @@ const App = () => {
                   </p>
                 </div>
               </div>
+              <div className="hidden xl:flex w-64 h-80 bg-white/5 border border-white/10 rounded-2xl items-center justify-center backdrop-blur-sm">
+                <BookOpen size={80} className="text-white/10" />
+              </div>
             </div>
+          </div>
+        </section>
+
+        {/* Contact Me Section */}
+        <section id="contact" className="py-24 px-6">
+          <SectionHeader title="Get In Touch" subtitle="Communication" />
+          <div className="bg-white border border-slate-100 rounded-[4rem] p-12 md:p-20 shadow-xl relative overflow-hidden text-center">
+            <div className="relative z-10 max-w-2xl mx-auto space-y-8">
+              <div className="bg-sky-50 w-20 h-20 rounded-3xl flex items-center justify-center mx-auto text-sky-600 shadow-inner">
+                <Send size={32} />
+              </div>
+              <h3 className="text-4xl md:text-5xl font-black italic tracking-tighter">Let's discuss your next <br /><span className="text-sky-600">Robotics</span> innovation.</h3>
+              <p className="text-lg text-slate-500 font-sans leading-relaxed italic">
+                Whether it's a PhD opportunity, a research collaboration, or technical inquiries, feel free to reach out directly.
+              </p>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a
+                  href={`mailto:${profile.email}`}
+                  className="w-full sm:w-auto bg-slate-900 text-white px-10 py-5 rounded-2xl font-sans font-black text-sm uppercase tracking-[0.2em] hover:bg-sky-600 transition-all shadow-xl flex items-center justify-center space-x-3"
+                >
+                  <Mail size={18} />
+                  <span>Send an Email</span>
+                </a>
+                <button
+                  onClick={() => window.open(profile.linkedin, '_blank')}
+                  className="w-full sm:w-auto bg-white text-slate-900 border border-slate-200 px-10 py-5 rounded-2xl font-sans font-black text-sm uppercase tracking-[0.2em] hover:border-sky-600 transition-all flex items-center justify-center space-x-3"
+                >
+                  <Linkedin size={18} />
+                  <span>LinkedIn Message</span>
+                </button>
+              </div>
+              <div className="pt-10 flex flex-col items-center">
+                <span className="text-[10px] font-sans font-black uppercase tracking-[0.4em] text-slate-300 mb-2">Primary Mailing Address</span>
+                <span className="text-sm font-sans font-bold text-slate-800 border-b border-sky-100">{profile.email}</span>
+              </div>
+            </div>
+            {/* Background Decorative Element */}
+            <div className="absolute top-0 right-0 p-8 opacity-[0.03]">
+              <Globe size={400} />
+            </div>
+          </div>
+        </section>
+
+        {/* References */}
+        <section id="references" className="py-24 px-6">
+          <SectionHeader title="Recommendations" subtitle="References" />
+          <div className="grid md:grid-cols-2 gap-8">
+            <RefCard
+              name="Xavier Alameda-Pineda"
+              title="Research Director"
+              org="Inria Grenoble"
+              email="xavier.alameda-pineda@inria.fr"
+            />
+            <RefCard
+              name="Lounis Adouane"
+              title="Professor"
+              org="UTC Compiègne"
+              email="lounis.adouane@hds.utc.fr"
+            />
           </div>
         </section>
 
@@ -294,15 +493,18 @@ const SkillBlock = ({ icon: Icon, title, items, color }) => {
   );
 };
 
-const SocialCard = ({ icon: Icon, label }) => (
-  <button className="flex items-center justify-center space-x-3 py-4 bg-white hover:bg-slate-900 hover:text-white transition-all rounded-2xl border border-slate-100 shadow-sm w-full">
+const SocialCard = ({ icon: Icon, label, onClick }) => (
+  <button
+    onClick={onClick}
+    className="flex items-center justify-center space-x-3 py-4 bg-white hover:bg-slate-900 hover:text-white transition-all rounded-2xl border border-slate-100 shadow-sm w-full"
+  >
     <Icon size={18} />
     <span className="text-[11px] font-black uppercase tracking-widest">{label}</span>
   </button>
 );
 
 const RefCard = ({ name, title, org, email }) => (
-  <div className="flex items-center space-x-8 bg-white border border-slate-100 p-10 rounded-[2.5rem] shadow-sm">
+  <div className="flex items-center space-x-8 bg-white border border-slate-100 p-10 rounded-[2.5rem] shadow-sm hover:shadow-xl transition-all">
     <div className="bg-slate-50 p-5 rounded-2xl text-slate-300 shadow-inner">
       <Quote size={28} />
     </div>
@@ -311,6 +513,9 @@ const RefCard = ({ name, title, org, email }) => (
       <p className="text-[11px] font-sans text-slate-400 font-black uppercase tracking-widest leading-tight text-left">
         {title} <br /> <span className="text-sky-600 font-bold">{org}</span>
       </p>
+      <a href={`mailto:${email}`} className="text-xs font-sans text-sky-500 hover:underline flex items-center mt-2">
+        <Mail size={12} className="mr-1" /> {email}
+      </a>
     </div>
   </div>
 );
