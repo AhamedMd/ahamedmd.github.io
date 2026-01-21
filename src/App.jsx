@@ -408,7 +408,7 @@ const App = () => {
               </div>
               <h3 className="text-4xl md:text-6xl font-black italic tracking-tighter">Initiate a research <br /><span className="text-sky-600">consultation</span>.</h3>
               <p className="text-xl text-slate-500 font-sans leading-relaxed italic">
-                Open to discussions regarding doctoral research opportunities, international collaboration, or technical inquiries in the field of robotics.
+                Open to discussions regarding doctoral research opportunities or collaboration in the field of robotics.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
                 <a
