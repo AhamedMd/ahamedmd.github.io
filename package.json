@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://ahamedmd.github.io/ahamedmd",
+  "homepage": "https://ahamedmd.github.io/AhamedMd",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
